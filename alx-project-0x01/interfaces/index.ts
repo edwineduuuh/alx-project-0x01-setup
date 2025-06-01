@@ -29,11 +29,13 @@ export interface PostData {
     onSubmit: (post: PostData) => void;
 }
   
-export interface UserData {
+export interface UserProps {
     id: number;
     name: string;
     username: string;
     email: string;
+    phone: string;
+    website: string;
     address: {
       street: string;
       suite: string;
@@ -44,8 +46,6 @@ export interface UserData {
         lng: string;
       };
     };
-    phone: string;
-    website: string;
     company: {
       name: string;
       catchPhrase: string;
@@ -53,5 +53,9 @@ export interface UserData {
     };
   }
   
-  
+  export interface UserModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    onSubmit: (user: UserProps) => void;
+  }
   

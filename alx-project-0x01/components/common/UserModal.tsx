@@ -1,46 +1,128 @@
-import React from "react";
+import { UserModalProps, UserProps } from "../../interfaces";
+import { useState } from "react";
 
-interface UserModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+type UserFormData = {
+  name: string;
+  email: string;
+  username: string;
+  phone: string;
+  website: string;
+  avatar: string;
+  street: string;
+  suite: string;
+  city: string;
+  zipcode: string;
+  lat: string;
+  lng: string;
+};
 
-const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose }) => {
+const UserModal: React.FC<UserModalProps> = ({ isOpen, onClose, onSubmit }) => {
+  const [formData, setFormData] = useState<UserFormData>({
+    name: "",
+    email: "",
+    username: "",
+    phone: "",
+    website: "",
+    avatar: "",
+    street: "",
+    suite: "",
+    city: "",
+    zipcode: "",
+    lat: "",
+    lng: ""
+  });
+
   if (!isOpen) return null;
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const newUser: UserProps = {
+      id: Date.now(),
+      name: formData.name,
+      email: formData.email,
+      username: formData.username,
+      phone: formData.phone,
+      website: formData.website,
+      avatar: formData.avatar,
+      street: formData.street,
+      suite: formData.suite,
+      city: formData.city,
+      zipcode: formData.zipcode,
+      lat: formData.lat,
+      lng: formData.lng,
+      address: {
+        street: formData.street,
+        suite: formData.suite,
+        city: formData.city,
+        zipcode: formData.zipcode,
+        geo: { lat: formData.lat, lng: formData.lng }
+      },
+      company: {
+        name: "",
+        catchPhrase: "",
+        bs: ""
+      }
+    };
+
+    onSubmit(newUser);
+    onClose();
+  };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md relative">
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-gray-500 hover:text-red-600 text-xl font-bold"
-        >
-          ×
-        </button>
-        <h2 className="text-xl font-semibold mb-4">Add New User</h2>
-        <form className="space-y-3">
+      <div className="bg-white p-6 rounded-lg w-full max-w-md">
+        <h2 className="text-xl font-bold mb-4">Add New User</h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
-            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
             placeholder="Name"
-            className="w-full border border-gray-300 rounded-md p-2"
+            className="w-full border p-2 rounded"
           />
           <input
-            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
             placeholder="Email"
-            className="w-full border border-gray-300 rounded-md p-2"
+            className="w-full border p-2 rounded"
           />
           <input
-            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
             placeholder="Username"
-            className="w-full border border-gray-300 rounded-md p-2"
+            className="w-full border p-2 rounded"
+          />
+          <input
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            placeholder="Phone"
+            className="w-full border p-2 rounded"
+          />
+          <input
+            name="website"
+            value={formData.website}
+            onChange={handleChange}
+            placeholder="Website"
+            className="w-full border p-2 rounded"
           />
           <button
             type="submit"
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
           >
-            Save User
+            Save
           </button>
         </form>
+        <button onClick={onClose} className="mt-4 text-red-600 hover:underline">
+          Cancel
+        </button>
       </div>
     </div>
   );
