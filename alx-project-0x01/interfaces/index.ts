@@ -10,6 +10,10 @@ export interface UserProps {
     name: string;
     email: string;
     avatar: string;
+    street:  string;
+    suite:   string;
+    city:    string;
+    zipcode: string;
   }
   
   
