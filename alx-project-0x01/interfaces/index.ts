@@ -7,13 +7,14 @@ export interface PostProps {
 
 export interface UserProps {
     id: number;
-    name: string;
+    username: string;
     email: string;
     avatar: string;
     street:  string;
     suite:   string;
     city:    string;
     zipcode: string;
+    catchPhrase: string;
   }
   
   
